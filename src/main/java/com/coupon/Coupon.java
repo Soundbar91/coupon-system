@@ -108,4 +108,12 @@ public class Coupon {
         this.starDate = starDate;
         this.endDate = endDate;
     }
+
+    public Integer calcRemainingQuantity() {
+        return this.totalQuantity - this.issuedQuantity;
+    }
+
+    public Boolean isAvailable() {
+        return this.totalQuantity - this.issuedQuantity > 0;
+    }
 }
