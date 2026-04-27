@@ -1,4 +1,4 @@
-package com.coupon;
+package com.coupon.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

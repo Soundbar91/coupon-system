@@ -1,6 +1,8 @@
-package com.coupon;
+package com.coupon.dto;
 
 import java.time.LocalDateTime;
+
+import com.coupon.entity.IssuedCoupon;
 
 public record IssuedCouponResponse(
     Long issuedCouponId,
@@ -12,12 +14,12 @@ public record IssuedCouponResponse(
 ) {
     public static IssuedCouponResponse from(IssuedCoupon issuedCoupon) {
         return new IssuedCouponResponse(
-            issuedCoupon.id,
-            issuedCoupon.coupon.id,
-            issuedCoupon.coupon.name,
-            issuedCoupon.status.name(),
-            issuedCoupon.issuedAt,
-            issuedCoupon.expiredAt
+            issuedCoupon.getId(),
+            issuedCoupon.getCoupon().getId(),
+            issuedCoupon.getCoupon().getName(),
+            issuedCoupon.getStatus().name(),
+            issuedCoupon.getIssuedAt(),
+            issuedCoupon.getExpiredAt()
         );
     }
 }

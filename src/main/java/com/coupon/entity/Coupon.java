@@ -1,10 +1,13 @@
-package com.coupon;
+package com.coupon.entity;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import java.time.LocalDateTime;
+
+import com.coupon.enums.CouponType;
+import com.coupon.enums.Status;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,57 +29,57 @@ public class Coupon {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    Long id;
+    private Long id;
 
     @NotEmpty
     @Column(name = "name")
-    String name;
+    private String name;
 
     @NotEmpty
     @Column(name = "description")
-    String description;
+    private String description;
 
     @NotEmpty
     @Enumerated(value = STRING)
     @Column(name = "coupon_type")
-    CouponType couponType;
+    private CouponType couponType;
 
     @NotEmpty
     @Enumerated(value = STRING)
     @Column(name = "status")
-    Status status;
+    private Status status;
 
     @NotNull
     @Column(name = "discount_value")
-    Integer discountValue;
+    private Integer discountValue;
 
     @NotNull
     @Column(name = "min_order_amount")
-    Integer minOrderAmount;
+    private Integer minOrderAmount;
 
     @NotNull
     @Column(name = "max_discount_amount")
-    Integer maxDiscountAmount;
+    private Integer maxDiscountAmount;
 
     @NotNull
     @Column(name = "total_quantity")
-    Integer totalQuantity;
+    private Integer totalQuantity;
 
     @NotNull
     @Column(name = "issued_quantity")
-    Integer issuedQuantity;
+    private Integer issuedQuantity;
 
     @NotNull
     @Column(name = "valid_days")
-    Integer validDays;
+    private Integer validDays;
 
     @NotNull
     @Column(name = "start_date")
-    LocalDateTime starDate;
+    private LocalDateTime starDate;
 
     @NotNull
     @Column(name = "end_date")
-    LocalDateTime endDate;
+    private LocalDateTime endDate;
 
     @Builder
     private Coupon(

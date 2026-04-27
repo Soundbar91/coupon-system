@@ -1,8 +1,10 @@
-package com.coupon;
+package com.coupon.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.repository.Repository;
+
+import com.coupon.entity.IssuedCoupon;
 
 public interface IssuedCouponRepository extends Repository<IssuedCoupon, Long> {
 

@@ -1,4 +1,4 @@
-package com.coupon;
+package com.coupon.controller;
 
 import java.util.List;
 
@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.coupon.common.dto.ApiResponse;
+import com.coupon.dto.AvailableCouponResponse;
+import com.coupon.dto.IssuedCouponResponse;
+import com.coupon.service.CouponService;
 
 import lombok.RequiredArgsConstructor;
 

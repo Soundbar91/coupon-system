@@ -1,4 +1,4 @@
-package com.coupon;
+package com.coupon.entity;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
@@ -6,6 +6,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import java.time.LocalDateTime;
+
+import com.coupon.enums.IssuedCouponStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,32 +37,32 @@ public class IssuedCoupon {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    Long id;
+    private Long id;
 
     @NotNull
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "coupon_id")
-    Coupon coupon;
+    private Coupon coupon;
 
     @NotNull
     @Column(name = "user_id")
-    Long userId;
+    private Long userId;
 
     @NotNull
     @Enumerated(value = STRING)
     @Column(name = "status")
-    IssuedCouponStatus status;
+    private IssuedCouponStatus status;
 
     @NotNull
     @Column(name = "issued_at")
-    LocalDateTime issuedAt;
+    private LocalDateTime issuedAt;
 
     @NotNull
     @Column(name = "expired_at")
-    LocalDateTime expiredAt;
+    private LocalDateTime expiredAt;
 
     @Column(name = "used_at")
-    LocalDateTime usedAt;
+    private LocalDateTime usedAt;
 
     @Builder
     private IssuedCoupon(
@@ -87,7 +89,7 @@ public class IssuedCoupon {
             .userId(userId)
             .status(IssuedCouponStatus.ISSUED)
             .issuedAt(LocalDateTime.now())
-            .expiredAt(LocalDateTime.now().plusDays(coupon.validDays))
+            .expiredAt(LocalDateTime.now().plusDays(coupon.getValidDays()))
             .build();
     }
 }

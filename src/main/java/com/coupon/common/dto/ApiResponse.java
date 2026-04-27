@@ -1,4 +1,4 @@
-package com.coupon;
+package com.coupon.common.dto;
 
 import static java.lang.Boolean.*;
 

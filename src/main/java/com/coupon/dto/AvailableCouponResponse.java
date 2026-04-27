@@ -1,6 +1,8 @@
-package com.coupon;
+package com.coupon.dto;
 
 import java.time.LocalDateTime;
+
+import com.coupon.entity.Coupon;
 
 public record AvailableCouponResponse(
     Long couponId,

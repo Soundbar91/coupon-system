@@ -1,15 +1,13 @@
-package com.coupon;
+package com.coupon.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum IssuedCouponStatus {
+public enum CouponType {
 
-    ISSUED,
-    USED,
-    EXPIRED,
-    CANCELLED,
+    FIXED_AMOUNT,
+    PERCENTAGE,
     ;
 }

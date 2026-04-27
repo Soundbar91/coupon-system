@@ -1,4 +1,4 @@
-package com.coupon;
+package com.coupon.entity;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -26,28 +26,28 @@ public class CouponUsageHistory {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    Long id;
+    private Long id;
 
     @NotNull
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "issued_coupon_id")
-    IssuedCoupon issuedCoupon;
+    private IssuedCoupon issuedCoupon;
 
     @NotNull
     @Column(name = "user_id")
-    Long userId;
+    private Long userId;
 
     @NotNull
     @Column(name = "order_id")
-    Long orderId;
+    private Long orderId;
 
     @NotNull
     @Column(name = "discount_amount")
-    Integer discountAmount;
+    private Integer discountAmount;
 
     @NotNull
     @Column(name = "used_at")
-    LocalDateTime usedAt;
+    private LocalDateTime usedAt;
 
     @Builder
     private CouponUsageHistory(
