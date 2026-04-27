@@ -116,4 +116,8 @@ public class Coupon {
     public Boolean isAvailable() {
         return this.totalQuantity - this.issuedQuantity > 0;
     }
+
+    public Boolean isNotAvailable() {
+        return !this.isAvailable();
+    }
 }

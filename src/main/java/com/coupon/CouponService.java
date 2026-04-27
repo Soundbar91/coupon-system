@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class CouponService {
 
     private final CouponRepository couponRepository;
+    private final IssuedCouponRepository issuedCouponRepository;
 
     public List<AvailableCouponResponse> getAvailableCoupons() {
         List<Coupon> coupons = couponRepository.findAll();
@@ -20,5 +21,21 @@ public class CouponService {
             .filter(Coupon::isAvailable)
             .map(AvailableCouponResponse::from)
             .toList();
+    }
+
+    public IssuedCouponResponse issueCoupon(Long couponId, Long userId) {
+        if (issuedCouponRepository.findByCouponIdAndUserId(couponId, userId).isPresent()) {
+            throw new IllegalArgumentException("이미 발급받은 쿠폰입니다");
+        }
+
+        Coupon coupon = couponRepository.findById(couponId)
+            .orElseThrow(() -> new IllegalArgumentException("couponId : " + couponId));
+
+        if (coupon.isNotAvailable()) {
+            throw new IllegalArgumentException("쿠폰 재고가 소진되었습니다.");
+        }
+
+        IssuedCoupon issuedCoupon = issuedCouponRepository.save(IssuedCoupon.create(coupon, userId));
+        return IssuedCouponResponse.from(issuedCoupon);
     }
 }

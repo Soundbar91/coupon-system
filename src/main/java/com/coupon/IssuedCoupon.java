@@ -80,4 +80,14 @@ public class IssuedCoupon {
         this.expiredAt = expiredAt;
         this.usedAt = usedAt;
     }
+
+    public static IssuedCoupon create(Coupon coupon, Long userId) {
+        return IssuedCoupon.builder()
+            .coupon(coupon)
+            .userId(userId)
+            .status(IssuedCouponStatus.ISSUED)
+            .issuedAt(LocalDateTime.now())
+            .expiredAt(LocalDateTime.now().plusDays(coupon.validDays))
+            .build();
+    }
 }
