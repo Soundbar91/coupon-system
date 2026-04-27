@@ -16,14 +16,14 @@ public record AvailableCouponResponse(
 ) {
     public static AvailableCouponResponse from(Coupon coupon) {
         return new AvailableCouponResponse(
-            coupon.id,
-            coupon.name,
-            coupon.couponType.name(),
-            coupon.discountValue,
-            coupon.totalQuantity,
+            coupon.getId(),
+            coupon.getName(),
+            coupon.getCouponType().name(),
+            coupon.getDiscountValue(),
+            coupon.getTotalQuantity(),
             coupon.calcRemainingQuantity(),
-            coupon.starDate,
-            coupon.endDate
+            coupon.getStarDate(),
+            coupon.getEndDate()
         );
     }
 }
