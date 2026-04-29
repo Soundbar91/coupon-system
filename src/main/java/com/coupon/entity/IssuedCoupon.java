@@ -84,7 +84,7 @@ public class IssuedCoupon {
     }
 
     public static IssuedCoupon create(Coupon coupon, Long userId) {
-현        return IssuedCoupon.builder()
+        return IssuedCoupon.builder()
             .coupon(coupon)
             .userId(userId)
             .status(IssuedCouponStatus.ISSUED)
