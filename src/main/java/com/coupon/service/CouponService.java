@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.coupon.common.exception.CustomException;
+import com.coupon.common.exception.ErrorCode;
 import com.coupon.dto.AvailableCouponResponse;
 import com.coupon.entity.Coupon;
 import com.coupon.repository.CouponRepository;
@@ -32,14 +34,14 @@ public class CouponService {
 
     public IssuedCouponResponse issueCoupon(Long couponId, Long userId) {
         if (issuedCouponRepository.findByCouponIdAndUserId(couponId, userId).isPresent()) {
-            throw new IllegalArgumentException("이미 발급받은 쿠폰입니다");
+            throw CustomException.of(ErrorCode.OUT_OF_STOCK_COUPON);
         }
 
         Coupon coupon = couponRepository.findById(couponId)
             .orElseThrow(() -> new IllegalArgumentException("couponId : " + couponId));
 
         if (coupon.isNotAvailable()) {
-            throw new IllegalArgumentException("쿠폰 재고가 소진되었습니다.");
+            throw CustomException.of(ErrorCode.DUPLICATE_ISSUED_COUPON);
         }
 
         IssuedCoupon issuedCoupon = issuedCouponRepository.save(IssuedCoupon.create(coupon, userId));

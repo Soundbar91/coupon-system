@@ -12,4 +12,11 @@ public record ApiResponse<T>(
             data
         );
     }
+
+    public static <T> ApiResponse<String> fail(String message) {
+        return new ApiResponse<>(
+            FALSE,
+            message
+        );
+    }
 }
