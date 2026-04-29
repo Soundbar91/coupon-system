@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.coupon.common.exception.CustomException;
 import com.coupon.common.exception.ErrorCode;
 import com.coupon.dto.AvailableCouponResponse;
+import com.coupon.dto.CouponStockResponse;
 import com.coupon.entity.Coupon;
 import com.coupon.repository.CouponRepository;
 import com.coupon.entity.IssuedCoupon;
@@ -46,5 +47,13 @@ public class CouponService {
 
         IssuedCoupon issuedCoupon = issuedCouponRepository.save(IssuedCoupon.create(coupon, userId));
         return IssuedCouponResponse.from(issuedCoupon);
+    }
+
+    public CouponStockResponse getCouponStock(Long couponId) {
+        Coupon coupon = couponRepository.findById(couponId)
+            .orElseThrow(() -> new IllegalArgumentException("couponId : " + couponId));
+        Integer issuedCouponCount = issuedCouponRepository.countByCouponId(couponId);
+
+        return CouponStockResponse.from(coupon, issuedCouponCount);
     }
 }

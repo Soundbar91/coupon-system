@@ -10,5 +10,7 @@ public interface IssuedCouponRepository extends Repository<IssuedCoupon, Long> {
 
     Optional<IssuedCoupon> findByCouponIdAndUserId(Long couponId, Long userId);
 
+    Integer countByCouponId(Long couponId);
+
     IssuedCoupon save(IssuedCoupon issuedCoupon);
 }

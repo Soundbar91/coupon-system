@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.coupon.common.dto.ApiResponse;
 import com.coupon.dto.AvailableCouponResponse;
+import com.coupon.dto.CouponStockResponse;
 import com.coupon.dto.IssuedCouponResponse;
 import com.coupon.service.CouponService;
 
@@ -35,6 +36,14 @@ public class CouponController {
         Long userId
     ) {
         IssuedCouponResponse response = couponService.issueCoupon(couponId, userId);
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+
+    @GetMapping("/{couponId}/stock")
+    public ResponseEntity<ApiResponse<CouponStockResponse>> getCouponStock(
+        @PathVariable Long couponId
+    ) {
+        CouponStockResponse response = couponService.getCouponStock(couponId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 }
