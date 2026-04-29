@@ -22,7 +22,7 @@ public record AvailableCouponResponse(
             coupon.getDiscountValue(),
             coupon.getTotalQuantity(),
             coupon.calcRemainingQuantity(),
-            coupon.getStarDate(),
+            coupon.getStartDate(),
             coupon.getEndDate()
         );
     }

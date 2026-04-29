@@ -75,7 +75,7 @@ public class Coupon {
 
     @NotNull
     @Column(name = "start_date")
-    private LocalDateTime starDate;
+    private LocalDateTime startDate;
 
     @NotNull
     @Column(name = "end_date")
@@ -94,7 +94,7 @@ public class Coupon {
         Integer totalQuantity,
         Integer issuedQuantity,
         Integer validDays,
-        LocalDateTime starDate,
+        LocalDateTime startDate,
         LocalDateTime endDate
     ) {
         this.id = id;
@@ -108,7 +108,7 @@ public class Coupon {
         this.totalQuantity = totalQuantity;
         this.issuedQuantity = issuedQuantity;
         this.validDays = validDays;
-        this.starDate = starDate;
+        this.startDate = startDate;
         this.endDate = endDate;
     }
 
