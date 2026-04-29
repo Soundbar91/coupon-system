@@ -34,6 +34,7 @@ public class CouponService {
             .toList();
     }
 
+    @Transactional
     public IssuedCouponResponse issueCoupon(Long couponId, Long userId) {
         if (issuedCouponRepository.findByCouponIdAndUserId(couponId, userId).isPresent()) {
             throw CustomException.of(DUPLICATE_ISSUED_COUPON);
@@ -42,17 +43,22 @@ public class CouponService {
         Coupon coupon = couponRepository.findById(couponId)
             .orElseThrow(() -> CustomException.of(NOT_FOUND_COUPON));
 
-        if (coupon.isNotAvailable()) {
+        if (!coupon.isActive() || !coupon.isIssuingPeriod()) {
+            throw CustomException.of(NOT_AVAILABLE_COUPON);
+        }
+
+        if (!coupon.hasStock()) {
             throw CustomException.of(OUT_OF_STOCK_COUPON);
         }
 
+        coupon.increaseIssuedQuantity();
         IssuedCoupon issuedCoupon = issuedCouponRepository.save(IssuedCoupon.create(coupon, userId));
         return IssuedCouponResponse.from(issuedCoupon);
     }
 
     public CouponStockResponse getCouponStock(Long couponId) {
         Coupon coupon = couponRepository.findById(couponId)
-            .orElseThrow(() -> CustomException.of(OUT_OF_STOCK_COUPON));
+            .orElseThrow(() -> CustomException.of(NOT_FOUND_COUPON));
         Integer issuedCouponCount = issuedCouponRepository.countByCouponId(couponId);
 
         return CouponStockResponse.from(coupon, issuedCouponCount);

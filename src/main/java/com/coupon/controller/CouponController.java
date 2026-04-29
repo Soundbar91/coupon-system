@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coupon.common.dto.ApiResponse;
 import com.coupon.dto.AvailableCouponResponse;
 import com.coupon.dto.CouponStockResponse;
+import com.coupon.dto.IssueCouponRequest;
 import com.coupon.dto.IssuedCouponResponse;
 import com.coupon.service.CouponService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,10 +35,10 @@ public class CouponController {
 
     @PostMapping("/{couponId}/issue")
     public ResponseEntity<ApiResponse<IssuedCouponResponse>> issueCoupon(
-        @PathVariable Long couponId,
-        @RequestBody Long userId
+        @Valid @RequestBody IssueCouponRequest request,
+        @PathVariable Long couponId
     ) {
-        IssuedCouponResponse response = couponService.issueCoupon(couponId, userId);
+        IssuedCouponResponse response = couponService.issueCoupon(couponId, request.userId());
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 

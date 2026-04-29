@@ -116,12 +116,21 @@ public class Coupon {
         return this.totalQuantity - this.issuedQuantity;
     }
 
-    public Boolean isAvailable() {
+    public boolean isActive() {
+        return this.status == Status.ACTIVE;
+    }
+
+    public boolean isIssuingPeriod() {
+        LocalDateTime now = LocalDateTime.now();
+        return !now.isBefore(this.startDate) && !now.isAfter(this.endDate);
+    }
+
+    public boolean hasStock() {
         return this.totalQuantity - this.issuedQuantity > 0;
     }
 
-    public Boolean isNotAvailable() {
-        return !this.isAvailable();
+    public boolean isAvailable() {
+        return isActive() && isIssuingPeriod() && hasStock();
     }
 
     public void increaseIssuedQuantity() {
