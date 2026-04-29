@@ -123,4 +123,8 @@ public class Coupon {
     public Boolean isNotAvailable() {
         return !this.isAvailable();
     }
+
+    public void increaseIssuedQuantity() {
+        this.issuedQuantity++;
+    }
 }
