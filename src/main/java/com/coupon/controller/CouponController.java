@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +34,7 @@ public class CouponController {
     @PostMapping("/{couponId}/issue")
     public ResponseEntity<ApiResponse<IssuedCouponResponse>> issueCoupon(
         @PathVariable Long couponId,
-        Long userId
+        @RequestBody Long userId
     ) {
         IssuedCouponResponse response = couponService.issueCoupon(couponId, userId);
         return ResponseEntity.ok(ApiResponse.success(response));
