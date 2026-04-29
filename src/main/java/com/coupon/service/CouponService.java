@@ -36,14 +36,14 @@ public class CouponService {
 
     public IssuedCouponResponse issueCoupon(Long couponId, Long userId) {
         if (issuedCouponRepository.findByCouponIdAndUserId(couponId, userId).isPresent()) {
-            throw CustomException.of(OUT_OF_STOCK_COUPON);
+            throw CustomException.of(DUPLICATE_ISSUED_COUPON);
         }
 
         Coupon coupon = couponRepository.findById(couponId)
             .orElseThrow(() -> CustomException.of(NOT_FOUND_COUPON));
 
         if (coupon.isNotAvailable()) {
-            throw CustomException.of(DUPLICATE_ISSUED_COUPON);
+            throw CustomException.of(OUT_OF_STOCK_COUPON);
         }
 
         IssuedCoupon issuedCoupon = issuedCouponRepository.save(IssuedCoupon.create(coupon, userId));
