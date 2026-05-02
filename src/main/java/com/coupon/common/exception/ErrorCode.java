@@ -14,6 +14,7 @@ public enum ErrorCode {
     NOT_FOUND_COUPON(HttpStatus.NOT_FOUND, "존재하지 않은 쿠폰입니다."),
     NOT_AVAILABLE_COUPON(HttpStatus.BAD_REQUEST, "발급 가능한 쿠폰이 아닙니다."),
     INVALID_REQUEST(HttpStatus.BAD_REQUEST, "요청 값이 올바르지 않습니다."),
+    SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내에 오류가 발생했습니다."),
     ;
 
     private final HttpStatus httpStatus;

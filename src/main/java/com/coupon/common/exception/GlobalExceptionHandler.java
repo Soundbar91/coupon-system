@@ -25,6 +25,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(httpStatus.value()).body(ApiResponse.fail(message));
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<String>> handleException(Exception exception) {
+        ErrorCode serverError = ErrorCode.SERVER_ERROR;
+        HttpStatus httpStatus = serverError.getHttpStatus();
+        String message = serverError.getMessage();
+
+        return ResponseEntity.status(httpStatus.value()).body(ApiResponse.fail(message));
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
         MethodArgumentNotValidException ex,
