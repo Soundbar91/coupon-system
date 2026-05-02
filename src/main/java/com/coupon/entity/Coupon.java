@@ -39,12 +39,12 @@ public class Coupon {
     @Column(name = "description")
     private String description;
 
-    @NotEmpty
+    @NotNull
     @Enumerated(value = STRING)
     @Column(name = "coupon_type")
     private CouponType couponType;
 
-    @NotEmpty
+    @NotNull
     @Enumerated(value = STRING)
     @Column(name = "status")
     private Status status;
