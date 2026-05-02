@@ -1,6 +1,8 @@
-DELETE FROM coupon_usage_history;
-DELETE FROM issued_coupon;
-DELETE FROM coupon;
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE coupon_usage_history;
+TRUNCATE TABLE issued_coupon;
+TRUNCATE TABLE coupon;
+SET FOREIGN_KEY_CHECKS = 1;
 
 INSERT INTO coupon (name, description, coupon_type, status, discount_value, min_order_amount, max_discount_amount,
                     total_quantity, issued_quantity, valid_days, start_date, end_date)
