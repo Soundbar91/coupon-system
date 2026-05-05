@@ -45,7 +45,7 @@ export default function () {
 
   const success = response.status === 200 && body.success === true;
   const conflict = response.status === 409 && body.success === false;
-  const message = conflict ? body.message : '';
+  const message = conflict ? body.data : '';
 
   if (success) {
     issueSuccess.add(1);
