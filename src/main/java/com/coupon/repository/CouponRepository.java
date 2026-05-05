@@ -22,9 +22,9 @@ public interface CouponRepository extends Repository<Coupon, Long> {
     Optional<Coupon> findById(Long id);
 
     @Query("""
-            select c
-            from Coupon c
-            where c.id = :couponId
+        select c
+        from Coupon c
+        where c.id = :couponId
         """)
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Coupon> findByIdForUpdate(@Param("couponId") Long couponId);
