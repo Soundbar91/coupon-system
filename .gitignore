@@ -40,3 +40,8 @@ application.yml
 
 docs
 .env*
+
+dd-java-agent.jar
+datadog
+
+logs
