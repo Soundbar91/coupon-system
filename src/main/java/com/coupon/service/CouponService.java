@@ -40,7 +40,7 @@ public class CouponService {
             throw CustomException.of(DUPLICATE_ISSUED_COUPON);
         }
 
-        Coupon coupon = couponRepository.findByIdForUpdate(couponId)
+        Coupon coupon = couponRepository.findById(couponId)
             .orElseThrow(() -> CustomException.of(NOT_FOUND_COUPON));
 
         if (!coupon.isActive() || !coupon.isIssuingPeriod()) {
