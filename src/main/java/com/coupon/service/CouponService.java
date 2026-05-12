@@ -36,7 +36,7 @@ public class CouponService {
 
     @Transactional
     public IssuedCouponResponse issueCoupon(Long couponId, Long userId) {
-        if (issuedCouponRepository.findByCouponIdAndUserId(couponId, userId).isPresent()) {
+        if (issuedCouponRepository.existByCouponIdAndUserId(couponId, userId)) {
             throw CustomException.of(DUPLICATE_ISSUED_COUPON);
         }
 
