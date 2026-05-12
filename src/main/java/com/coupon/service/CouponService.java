@@ -42,7 +42,7 @@ public class CouponService {
             throw CustomException.of(DUPLICATE_ISSUED_COUPON);
         }
 
-        Coupon coupon = couponRepository.findById(couponId)
+        Coupon coupon = couponRepository.findByIdForUpdate(couponId)
             .orElseThrow(() -> CustomException.of(NOT_FOUND_COUPON));
 
         if (!coupon.isActive() || !coupon.isIssuingPeriod()) {
@@ -53,10 +53,7 @@ public class CouponService {
             throw CustomException.of(OUT_OF_STOCK_COUPON);
         }
 
-        int updatedCount = couponRepository.increaseIssuedQuantityIfAvailable(couponId, Status.ACTIVE, LocalDateTime.now());
-        if (updatedCount == 0) {
-            throw CustomException.of(OUT_OF_STOCK_COUPON);
-        }
+        coupon.increaseIssuedQuantity();
         IssuedCoupon issuedCoupon = issuedCouponRepository.save(IssuedCoupon.create(coupon, userId));
         return IssuedCouponResponse.from(issuedCoupon);
     }
