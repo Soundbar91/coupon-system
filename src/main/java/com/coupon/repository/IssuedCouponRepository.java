@@ -6,7 +6,7 @@ import com.coupon.entity.IssuedCoupon;
 
 public interface IssuedCouponRepository extends Repository<IssuedCoupon, Long> {
 
-    boolean existByCouponIdAndUserId(Long couponId, Long userId);
+    boolean existsByCouponIdAndUserId(Long couponId, Long userId);
 
     Integer countByCouponId(Long couponId);
 

@@ -2,6 +2,7 @@ package com.coupon.service;
 
 import static com.coupon.common.exception.ErrorCode.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import com.coupon.dto.CouponStockResponse;
 import com.coupon.dto.IssuedCouponResponse;
 import com.coupon.entity.Coupon;
 import com.coupon.entity.IssuedCoupon;
+import com.coupon.enums.Status;
 import com.coupon.repository.CouponRepository;
 import com.coupon.repository.IssuedCouponRepository;
 
@@ -36,7 +38,7 @@ public class CouponService {
 
     @Transactional
     public IssuedCouponResponse issueCoupon(Long couponId, Long userId) {
-        if (issuedCouponRepository.existByCouponIdAndUserId(couponId, userId)) {
+        if (issuedCouponRepository.existsByCouponIdAndUserId(couponId, userId)) {
             throw CustomException.of(DUPLICATE_ISSUED_COUPON);
         }
 
@@ -51,7 +53,10 @@ public class CouponService {
             throw CustomException.of(OUT_OF_STOCK_COUPON);
         }
 
-        coupon.increaseIssuedQuantity();
+        int updatedCount = couponRepository.increaseIssuedQuantityIfAvailable(couponId, Status.ACTIVE, LocalDateTime.now());
+        if (updatedCount == 0) {
+            throw CustomException.of(OUT_OF_STOCK_COUPON);
+        }
         IssuedCoupon issuedCoupon = issuedCouponRepository.save(IssuedCoupon.create(coupon, userId));
         return IssuedCouponResponse.from(issuedCoupon);
     }
