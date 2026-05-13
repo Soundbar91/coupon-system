@@ -44,16 +44,8 @@ public class CouponService {
 
         Coupon coupon = couponRepository.findByIdForUpdate(couponId)
             .orElseThrow(() -> CustomException.of(NOT_FOUND_COUPON));
-
-        if (!coupon.isActive() || !coupon.isIssuingPeriod()) {
-            throw CustomException.of(NOT_AVAILABLE_COUPON);
-        }
-
-        if (!coupon.hasStock()) {
-            throw CustomException.of(OUT_OF_STOCK_COUPON);
-        }
-
         coupon.increaseIssuedQuantity();
+
         IssuedCoupon issuedCoupon = issuedCouponRepository.save(IssuedCoupon.create(coupon, userId));
         return IssuedCouponResponse.from(issuedCoupon);
     }

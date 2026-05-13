@@ -1,11 +1,14 @@
 package com.coupon.entity;
 
+import static com.coupon.common.exception.ErrorCode.NOT_AVAILABLE_COUPON;
+import static com.coupon.common.exception.ErrorCode.OUT_OF_STOCK_COUPON;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import java.time.LocalDateTime;
 
+import com.coupon.common.exception.CustomException;
 import com.coupon.enums.CouponType;
 import com.coupon.enums.Status;
 
@@ -134,6 +137,14 @@ public class Coupon {
     }
 
     public void increaseIssuedQuantity() {
+        if (!isActive() || !isIssuingPeriod()) {
+            throw CustomException.of(NOT_AVAILABLE_COUPON);
+        }
+
+        if (!hasStock()) {
+            throw CustomException.of(OUT_OF_STOCK_COUPON);
+        }
+
         this.issuedQuantity++;
     }
 }
