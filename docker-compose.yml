@@ -13,6 +13,15 @@ services:
       - mysql-data:/var/lib/mysql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
+  redis:
+    image: redis:7.2-alpine
+    container_name: coupon-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+
   datadog:
     image: gcr.io/datadoghq/agent:latest
     container_name: coupon-datadog-agent
@@ -39,3 +48,4 @@ services:
 
 volumes:
   mysql-data:
+  redis-data:
