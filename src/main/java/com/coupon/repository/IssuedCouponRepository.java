@@ -11,4 +11,6 @@ public interface IssuedCouponRepository extends Repository<IssuedCoupon, Long> {
     Integer countByCouponId(Long couponId);
 
     IssuedCoupon save(IssuedCoupon issuedCoupon);
+
+    void flush();
 }

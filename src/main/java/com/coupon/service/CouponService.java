@@ -5,6 +5,7 @@ import static com.coupon.common.exception.ErrorCode.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
     private final IssuedCouponRepository issuedCouponRepository;
+    private final CouponIssueRedisService couponIssueRedisService;
 
     public List<AvailableCouponResponse> getAvailableCoupons() {
         List<Coupon> coupons = couponRepository.findAll();
@@ -38,23 +40,34 @@ public class CouponService {
 
     @Transactional
     public IssuedCouponResponse issueCoupon(Long couponId, Long userId) {
-        if (issuedCouponRepository.existsByCouponIdAndUserId(couponId, userId)) {
-            throw CustomException.of(DUPLICATE_ISSUED_COUPON);
+        Coupon coupon = couponRepository.findById(couponId)
+            .orElseThrow(() -> CustomException.of(NOT_FOUND_COUPON));
+
+        if (!coupon.isActive() || !coupon.isIssuingPeriod()) {
+            throw CustomException.of(NOT_AVAILABLE_COUPON);
         }
 
-        Coupon coupon = couponRepository.findByIdForUpdate(couponId)
-            .orElseThrow(() -> CustomException.of(NOT_FOUND_COUPON));
-        coupon.increaseIssuedQuantity();
+        couponIssueRedisService.reserve(coupon, userId);
 
-        IssuedCoupon issuedCoupon = issuedCouponRepository.save(IssuedCoupon.create(coupon, userId));
-        return IssuedCouponResponse.from(issuedCoupon);
+        try {
+            int updatedCount = couponRepository.increaseIssuedQuantityIfAvailable(couponId, Status.ACTIVE, LocalDateTime.now());
+            if (updatedCount != 1) {
+                throw CustomException.of(OUT_OF_STOCK_COUPON);
+            }
+
+            IssuedCoupon issuedCoupon = issuedCouponRepository.save(IssuedCoupon.create(coupon, userId));
+            issuedCouponRepository.flush();
+            return IssuedCouponResponse.from(issuedCoupon);
+        } catch (DataIntegrityViolationException exception) {
+            couponIssueRedisService.rollback(couponId, userId);
+            throw CustomException.of(DUPLICATE_ISSUED_COUPON);
+        }
     }
 
     public CouponStockResponse getCouponStock(Long couponId) {
         Coupon coupon = couponRepository.findById(couponId)
             .orElseThrow(() -> CustomException.of(NOT_FOUND_COUPON));
-        Integer issuedCouponCount = issuedCouponRepository.countByCouponId(couponId);
 
-        return CouponStockResponse.from(coupon, issuedCouponCount);
+        return CouponStockResponse.from(coupon, coupon.getIssuedQuantity());
     }
 }
